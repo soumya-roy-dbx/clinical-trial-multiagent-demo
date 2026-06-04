@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.DS_Store
+
+# MLflow local store (eval artifacts live in MLflow runs, not the repo)
+mlflow.db
+mlruns/
+eval/_last_results.csv
+
+# Databricks Asset Bundle local state (bundle.tf.json, deployment.json,
+# sync-snapshots, terraform plugin cache). Rebuilt on every `bundle deploy`.
+.databricks/
+

@@ -1,0 +1,92 @@
+bundle:
+  name: clinical-trial-multiagent-demo
+
+variables:
+  app_name:
+    description: Name of the deployed Databricks App
+    default: app-one-page-demo-v2
+  catalog:
+    description: Unity Catalog containing the app's UC objects
+    default: your_catalog
+  schema:
+    description: Schema inside the catalog
+    default: sr
+  warehouse_id:
+    description: Serverless SQL warehouse ID (for Genie + Statement Execution)
+    default: your_warehouse_id
+  genie_space_id:
+    description: Genie Space ID over study_subjects
+    default: your_genie_space_id
+
+# Resource bindings the bundle DOES grant atomically on deploy:
+#   - SQL warehouse (CAN_USE)
+#   - Genie Space (CAN_RUN)
+#   - protocol_docs Volume (READ_VOLUME)
+#   - UC tables (SELECT only; see note below)
+#
+# Grants the Apps bundle schema does NOT support yet (manual post-deploy):
+#   - AI Gateway endpoints CAN_QUERY
+#       AI Gateway endpoints live in a separate resource namespace from
+#       regular serving endpoints (/api/2.0/permissions/ai-gateway-endpoints/).
+#       The bundle's `serving_endpoint` sub-type only sees foundation-model
+#       and KA endpoints, not AI Gateway endpoints.
+#   - Vector Search endpoint CAN_USE
+#       No vector_search_endpoint sub-type in the app resource schema.
+#   - MODIFY on the supervisor_decisions UC table
+#       uc_securable.permission enum allows only
+#       EXECUTE / READ_VOLUME / SELECT / USE_CONNECTION / WRITE_VOLUME.
+#
+# All three manual grants are documented in README.md - Operational gotchas.
+
+resources:
+  apps:
+    clinical_assistant:
+      name: ${var.app_name}
+      source_code_path: .
+      description: Multi-agent clinical-trial analytics demo (Streamlit + Genie + Vector Search + AI Gateway).
+      resources:
+        - name: sql-warehouse
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE
+        - name: genie-space
+          genie_space:
+            name: Clinical Trial Subject Disposition
+            space_id: ${var.genie_space_id}
+            permission: CAN_RUN
+        - name: protocol-chunks-table
+          uc_securable:
+            securable_full_name: ${var.catalog}.${var.schema}.protocol_chunks
+            securable_type: TABLE
+            permission: SELECT
+        - name: study-subjects-table
+          uc_securable:
+            securable_full_name: ${var.catalog}.${var.schema}.study_subjects
+            securable_type: TABLE
+            permission: SELECT
+        - name: supervisor-decisions-table
+          uc_securable:
+            securable_full_name: ${var.catalog}.${var.schema}.supervisor_decisions
+            securable_type: TABLE
+            permission: SELECT
+        - name: protocol-docs-volume
+          uc_securable:
+            securable_full_name: ${var.catalog}.${var.schema}.protocol_docs
+            securable_type: VOLUME
+            permission: READ_VOLUME
+
+targets:
+  # Dev target intentionally omits `mode: development` because that mode
+  # prefixes resource names (e.g. `[dev <user>] app-one-page-demo-v2`)
+  # which would create a parallel app instead of updating the existing one.
+  # Without `mode:`, names pass through as written so the bundle adopts and
+  # updates the already-deployed app.
+  dev:
+    default: true
+    workspace:
+      host: https://your-workspace.cloud.databricks.com
+
+  prod:
+    mode: production
+    workspace:
+      host: https://your-workspace.cloud.databricks.com

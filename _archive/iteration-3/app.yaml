@@ -1,0 +1,65 @@
+command:
+  - streamlit
+  - run
+  - app.py
+
+env:
+  - name: DATABRICKS_WAREHOUSE_ID
+    value: "your_warehouse_id"
+  - name: DATABRICKS_GENIE_SPACE_ID
+    value: "your_genie_space_id"
+  - name: SUPERVISOR_LLM_ENDPOINT
+    value: "databricks-meta-llama-3-1-70b-instruct"
+  - name: ROUTER_LLM_ENDPOINT
+    value: "ai_gateway_for_databricks-meta-llama-3-3-70b-instruct"
+  - name: FUSION_LLM_ENDPOINT
+    value: "ai_gateway_for_databricks-claude-sonnet-4-6"
+  - name: VECTOR_SEARCH_ENDPOINT
+    value: "your_vs_endpoint"
+  - name: VECTOR_SEARCH_INDEX
+    value: "your_catalog.your_schema.protocol_chunks_vs_index"
+  - name: USE_MULTI_AGENT
+    value: "true"
+  - name: LAKEBASE_FEEDBACK_URL
+    value: ""
+  - name: DECISION_LOG_TABLE
+    value: "your_catalog.your_schema.supervisor_decisions"
+
+# Iteration 3 Phase 3B: production posture. Each resource the app touches is
+# declared here so the Apps service principal automatically receives the
+# listed permission on every deploy. Note: AI Gateway endpoints can't yet be
+# declared as resources — the SP CAN_QUERY grant is applied separately via
+# /api/2.0/permissions/ai-gateway-endpoints/<name> (see UPGRADE_PLAN.md).
+resources:
+  - name: clinical-sql-warehouse
+    sql_warehouse:
+      id: your_warehouse_id
+      permission: CAN_USE
+  - name: clinical-genie-space
+    genie_space:
+      id: your_genie_space_id
+      permission: CAN_RUN
+  - name: study-subjects-table
+    uc_securable:
+      securable_full_name: your_catalog.your_schema.study_subjects
+      securable_type: TABLE
+      permission: SELECT
+  - name: protocol-vs-endpoint
+    vector_search_endpoint:
+      name: your_vs_endpoint
+      permission: CAN_USE
+  - name: protocol-docs-volume
+    uc_securable:
+      securable_full_name: your_catalog.your_schema.protocol_docs
+      securable_type: VOLUME
+      permission: READ_VOLUME
+  - name: protocol-chunks-table
+    uc_securable:
+      securable_full_name: your_catalog.your_schema.protocol_chunks
+      securable_type: TABLE
+      permission: SELECT
+  - name: supervisor-decisions-table
+    uc_securable:
+      securable_full_name: your_catalog.your_schema.supervisor_decisions
+      securable_type: TABLE
+      permission: MODIFY

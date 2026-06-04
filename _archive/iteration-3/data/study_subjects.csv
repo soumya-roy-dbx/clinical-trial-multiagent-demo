@@ -1,0 +1,101 @@
+subject_id,age,sex,region,arm,biomarker_status,adverse_event,serious_ae,disposition
+S0001,64,F,Westland,Treatment,Positive,None,0,Completed
+S0002,55,F,Eastland,Treatment,Negative,None,0,Completed
+S0003,76,F,Northland,Treatment,Negative,Event A,0,Completed
+S0004,77,M,Northland,Treatment,Negative,None,0,Completed
+S0005,72,M,Westland,Control,Positive,None,0,Completed
+S0006,74,F,Westland,Treatment,Negative,None,0,Completed
+S0007,64,M,Eastland,Control,Negative,Event A,1,Ongoing
+S0008,73,F,Northland,Treatment,Positive,None,0,Completed
+S0009,60,F,Eastland,Control,Negative,Event A,1,Completed
+S0010,70,F,Eastland,Control,Negative,Event A,0,Ongoing
+S0011,70,F,Westland,Control,Positive,None,0,Completed
+S0012,85,M,Westland,Control,Positive,None,0,Completed
+S0013,81,F,Eastland,Control,Positive,Event A+B,1,Ongoing
+S0014,54,M,Northland,Treatment,Negative,Event B,0,Completed
+S0015,50,F,Westland,Control,Positive,Event A+B,0,Ongoing
+S0016,68,M,Eastland,Control,Negative,None,0,Completed
+S0017,56,M,Westland,Control,Negative,Event B,0,Completed
+S0018,83,F,Westland,Treatment,Positive,Event B,0,Completed
+S0019,69,F,Eastland,Treatment,Positive,None,0,Completed
+S0020,54,F,Eastland,Treatment,Positive,None,0,Discontinued
+S0021,63,F,Westland,Treatment,Positive,Event B,0,Completed
+S0022,57,F,Eastland,Control,Positive,None,0,Completed
+S0023,64,F,Eastland,Treatment,Negative,None,0,Discontinued
+S0024,54,F,Northland,Treatment,Positive,Event A+B,0,Discontinued
+S0025,80,F,Northland,Treatment,Positive,Event A,0,Ongoing
+S0026,76,M,Westland,Treatment,Positive,Event A,0,Completed
+S0027,56,F,Eastland,Treatment,Positive,Event A,0,Completed
+S0028,79,F,Eastland,Control,Positive,None,0,Completed
+S0029,55,F,Eastland,Treatment,Positive,Event A+B,0,Completed
+S0030,53,F,Northland,Control,Positive,None,0,Completed
+S0031,77,M,Eastland,Control,Positive,Event B,0,Completed
+S0032,70,F,Eastland,Treatment,Negative,Event A,0,Completed
+S0033,61,F,Westland,Treatment,Positive,None,0,Completed
+S0034,52,F,Northland,Treatment,Positive,Event A+B,0,Discontinued
+S0035,70,F,Northland,Control,Negative,None,0,Completed
+S0036,50,M,Westland,Control,Positive,Event A+B,0,Ongoing
+S0037,66,F,Northland,Treatment,Positive,None,0,Ongoing
+S0038,84,M,Westland,Treatment,Positive,None,0,Ongoing
+S0039,56,F,Northland,Treatment,Negative,Event A,0,Completed
+S0040,68,F,Westland,Treatment,Negative,None,0,Completed
+S0041,53,F,Westland,Control,Positive,None,0,Completed
+S0042,58,M,Eastland,Control,Positive,None,0,Discontinued
+S0043,59,F,Northland,Control,Negative,None,0,Completed
+S0044,73,F,Northland,Treatment,Positive,None,0,Completed
+S0045,85,M,Westland,Treatment,Negative,None,0,Discontinued
+S0046,76,F,Eastland,Treatment,Negative,Event A+B,0,Discontinued
+S0047,65,M,Eastland,Control,Negative,None,0,Ongoing
+S0048,80,F,Eastland,Treatment,Positive,None,0,Ongoing
+S0049,64,F,Westland,Control,Positive,Event B,0,Completed
+S0050,67,M,Westland,Control,Positive,None,0,Completed
+S0051,66,F,Westland,Control,Negative,None,0,Ongoing
+S0052,70,M,Westland,Control,Positive,Event A,0,Ongoing
+S0053,77,F,Westland,Treatment,Positive,Event A,0,Ongoing
+S0054,71,M,Westland,Treatment,Positive,None,0,Ongoing
+S0055,68,F,Eastland,Control,Positive,Event A,0,Completed
+S0056,69,M,Westland,Control,Negative,Event A+B,0,Ongoing
+S0057,70,M,Northland,Control,Positive,None,0,Completed
+S0058,60,F,Northland,Treatment,Positive,Event B,0,Completed
+S0059,69,F,Eastland,Control,Positive,Event A+B,1,Completed
+S0060,54,M,Northland,Treatment,Positive,None,0,Ongoing
+S0061,75,F,Eastland,Treatment,Negative,None,0,Discontinued
+S0062,77,F,Eastland,Treatment,Negative,Event B,0,Ongoing
+S0063,57,M,Eastland,Control,Positive,None,0,Ongoing
+S0064,82,M,Westland,Control,Negative,Event B,0,Completed
+S0065,66,F,Westland,Treatment,Negative,None,0,Completed
+S0066,54,M,Eastland,Control,Negative,None,0,Completed
+S0067,59,F,Northland,Control,Negative,None,0,Discontinued
+S0068,84,M,Northland,Treatment,Positive,None,0,Completed
+S0069,51,M,Northland,Control,Positive,Event B,0,Completed
+S0070,76,F,Northland,Control,Positive,None,0,Completed
+S0071,75,F,Northland,Control,Positive,None,0,Ongoing
+S0072,55,M,Eastland,Treatment,Negative,Event A,0,Ongoing
+S0073,63,M,Northland,Treatment,Positive,None,0,Completed
+S0074,55,M,Eastland,Control,Positive,Event A+B,0,Discontinued
+S0075,54,F,Eastland,Treatment,Negative,None,0,Ongoing
+S0076,80,F,Westland,Treatment,Negative,Event A,1,Ongoing
+S0077,57,F,Northland,Control,Negative,Event B,1,Completed
+S0078,74,M,Westland,Treatment,Negative,Event A,0,Completed
+S0079,57,F,Northland,Treatment,Positive,Event B,0,Completed
+S0080,76,M,Eastland,Control,Positive,Event A,1,Completed
+S0081,77,F,Westland,Control,Negative,Event B,0,Completed
+S0082,79,M,Westland,Control,Negative,Event A+B,0,Completed
+S0083,78,F,Northland,Control,Negative,Event B,1,Completed
+S0084,70,F,Northland,Control,Positive,None,0,Completed
+S0085,67,F,Westland,Control,Positive,Event B,0,Ongoing
+S0086,85,F,Westland,Treatment,Positive,None,0,Completed
+S0087,68,F,Northland,Control,Positive,None,0,Discontinued
+S0088,85,M,Northland,Control,Negative,None,0,Ongoing
+S0089,69,M,Eastland,Control,Positive,None,0,Completed
+S0090,61,F,Eastland,Treatment,Positive,Event A,0,Discontinued
+S0091,68,F,Eastland,Control,Negative,Event A+B,0,Completed
+S0092,84,F,Northland,Control,Positive,None,0,Completed
+S0093,81,F,Eastland,Treatment,Negative,Event A,1,Completed
+S0094,53,M,Northland,Control,Positive,None,0,Completed
+S0095,53,F,Eastland,Treatment,Positive,None,0,Ongoing
+S0096,85,M,Westland,Control,Positive,None,0,Completed
+S0097,78,M,Westland,Treatment,Negative,None,0,Ongoing
+S0098,56,F,Westland,Control,Negative,None,0,Completed
+S0099,54,F,Eastland,Treatment,Positive,None,0,Completed
+S0100,68,M,Eastland,Control,Positive,None,0,Discontinued

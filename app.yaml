@@ -1,0 +1,34 @@
+command:
+  - streamlit
+  - run
+  - app.py
+
+# Env vars that reference bundle resources use `valueFrom: <resource-key>`
+# so the Apps runtime injects the bound identifier (warehouse ID, Genie
+# space ID, table full name) at startup. Resource keys are defined in
+# databricks.yml under resources.apps.clinical_assistant.resources[].name.
+#
+# Env vars with literal `value:` are for resources the bundle's app
+# schema doesn't cover (AI Gateway endpoints, VS endpoint, VS index)
+# and pure feature flags.
+env:
+  - name: DATABRICKS_WAREHOUSE_ID
+    valueFrom: sql-warehouse
+  - name: DATABRICKS_GENIE_SPACE_ID
+    valueFrom: genie-space
+  - name: DECISION_LOG_TABLE
+    valueFrom: supervisor-decisions-table
+  - name: SUPERVISOR_LLM_ENDPOINT
+    value: "databricks-meta-llama-3-1-70b-instruct"
+  - name: ROUTER_LLM_ENDPOINT
+    value: "ai_gateway_for_databricks-meta-llama-3-3-70b-instruct"
+  - name: FUSION_LLM_ENDPOINT
+    value: "ai_gateway_for_databricks-claude-sonnet-4-6"
+  - name: VECTOR_SEARCH_ENDPOINT
+    value: "your_vs_endpoint"
+  - name: VECTOR_SEARCH_INDEX
+    value: "your_catalog.your_schema.protocol_chunks_vs_index"
+  - name: USE_MULTI_AGENT
+    value: "true"
+  - name: LAKEBASE_FEEDBACK_URL
+    value: ""

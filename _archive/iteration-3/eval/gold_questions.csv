@@ -1,0 +1,19 @@
+id,expected_route,question,gold_answer
+g01,genie,How many subjects are in the Treatment group?,There are 48 subjects in the Treatment group.
+g02,genie,What is the subject count by region in the Treatment arm?,"Eastland 17, Northland 15, Westland 16."
+g03,genie,What is the biomarker positive distribution overall?,"Roughly 60 subjects are biomarker positive and 40 are negative across the study (Positive ~60%, Negative ~40%)."
+g04,genie,What is the incidence of Event A in the Treatment arm?,Incidence of Event A in the Treatment arm is 16/48 (33.3%).
+g05,genie,How many subjects are in the indicated biomarker-positive Treatment population?,28 subjects.
+g06,genie,How does Event A incidence compare between Treatment and Control?,Treatment shows 16/48 (33.3%) while Control has its own rate; the Treatment arm has a comparable but distinguishable Event A incidence to Control.
+v01,vector,What are the inclusion criteria for this study?,"Adults aged 50-85, confirmed diagnosis of the target condition per protocol-defined criteria, able to provide written informed consent, biomarker-positive at screening for the sub-study."
+v02,vector,What is the primary efficacy endpoint?,Change from baseline at Week 52 in the primary efficacy measure analyzed in the intent-to-treat (ITT) population.
+v03,vector,How is Event A defined in the protocol?,Event A is a protocol-defined adverse event of interest characterized by symptomatic presentation.
+v04,vector,What demographic fields are captured on the CRF?,"subject_id, age (50-85), sex (F/M), region (Eastland/Northland/Westland), arm (Treatment/Control), biomarker_status (Positive/Negative)."
+v05,vector,What is the overall study design?,"A Phase 3, randomized, double-blind, placebo-controlled study with 1:1 randomization to Treatment or Control, stratified by region and baseline biomarker status."
+v06,vector,What are the exclusion criteria?,"Known hypersensitivity to Compound X, participation in another interventional trial within 30 days, pregnancy or breastfeeding, any condition that would interfere with participation."
+h01,hybrid,What is the incidence of Event A in the Treatment arm and how is Event A defined in the protocol?,"Event A incidence in Treatment is 16/48 (33.3%); Event A is defined as a protocol-defined adverse event of interest with symptomatic presentation."
+h02,hybrid,How many subjects are in the indicated population and what defines indicated population in this study?,"28 subjects are in the indicated population; the indicated population is the biomarker-positive subjects in the Treatment arm used for the sub-study primary efficacy analysis."
+h03,hybrid,What is the serious adverse event rate in Treatment and what qualifies as a serious AE per protocol?,"The SAE rate in Treatment can be computed from the serious_ae flag; per the AE CRF, an SAE is one meeting death, hospitalization, life-threatening, persistent disability, congenital anomaly, or important medical event criteria."
+h04,hybrid,Show me regional subject counts in Treatment and explain how stratification works in this study,"Treatment regional counts are Eastland 17 / Northland 15 / Westland 16; per the protocol, randomization is 1:1 to Treatment vs Control, stratified by region and baseline biomarker status."
+h05,hybrid,How many subjects have completed the study and what does completion mean in this protocol?,"Completion can be counted from the disposition field (Completed status); per the disposition CRF, dispositions are Completed / Discontinued / Ongoing, with reason captured for early discontinuation."
+h06,hybrid,What is the biomarker-positive Treatment count and how is biomarker status determined?,"28 subjects are biomarker-positive in the Treatment arm; biomarker_status is captured once at the screening visit and locked at randomization."

@@ -1,0 +1,49 @@
+command:
+  - streamlit
+  - run
+  - app.py
+
+env:
+  - name: DATABRICKS_WAREHOUSE_ID
+    value: ""
+  - name: DATABRICKS_GENIE_SPACE_ID
+    value: ""
+  - name: SUPERVISOR_LLM_ENDPOINT
+    value: "databricks-meta-llama-3-1-70b-instruct"
+  - name: VECTOR_SEARCH_ENDPOINT
+    value: ""
+  - name: VECTOR_SEARCH_INDEX
+    value: ""
+  - name: USE_MULTI_AGENT
+    value: "true"
+  - name: LAKEBASE_FEEDBACK_URL
+    value: ""
+
+# Resource declarations are commented out for the mock-only demo. Uncomment and
+# fill in once the supporting resources exist in the workspace; the app service
+# principal will then receive the listed permission automatically on deploy.
+#
+# resources:
+#   - name: clinical-sql-warehouse
+#     sql_warehouse:
+#       id: <warehouse_id>
+#       permission: CAN_USE
+#   - name: clinical-genie-space
+#     genie_space:
+#       id: <genie_space_id>
+#       permission: CAN_RUN
+#   - name: protocol-docs-volume
+#     uc_securable:
+#       securable_full_name: <catalog>.<schema>.<volume>
+#       securable_type: VOLUME
+#       permission: READ_VOLUME
+#   - name: protocol-vs-endpoint
+#     vector_search_endpoint:
+#       name: <vector_search_endpoint>
+#       permission: CAN_USE
+#   # Only needed for provisioned-throughput / custom endpoints. Pay-per-token
+#   # Foundation Model API endpoints are queryable by the app SP by default.
+#   # - name: supervisor-llm
+#   #   serving_endpoint:
+#   #     name: <endpoint_name>
+#   #     permission: CAN_QUERY
