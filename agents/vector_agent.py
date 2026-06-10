@@ -25,6 +25,7 @@ from modules.config import (
     VECTOR_SEARCH_ENDPOINT,
     VECTOR_SEARCH_INDEX,
 )
+from modules.observability import trace
 
 DOCS_DIR = Path(__file__).resolve().parent.parent / "data" / "docs"
 
@@ -97,6 +98,7 @@ class VectorAgent(BaseAgent):
 
     # ---------- Entry point ----------
 
+    @trace(span_type="AGENT", name="vector_agent")
     def handle(self, question: str) -> AgentResponse:
         if self.live and self._client is not None:
             try:
@@ -136,6 +138,7 @@ class VectorAgent(BaseAgent):
             chunks=chunks,
         )
 
+    @trace(span_type="RETRIEVER", name="vector_search")
     def _vs_search(self, question: str, k: int) -> list[dict]:
         host = self._client.config.host
         url = f"{host}/api/2.0/vector-search/indexes/{VECTOR_SEARCH_INDEX}/query"
@@ -159,6 +162,7 @@ class VectorAgent(BaseAgent):
             })
         return chunks
 
+    @trace(span_type="LLM", name="rag_synthesize")
     def _rag_synthesize(self, question: str, chunks: list[dict]) -> str:
         host = self._client.config.host
         url = f"{host}/ai-gateway/mlflow/v1/chat/completions"

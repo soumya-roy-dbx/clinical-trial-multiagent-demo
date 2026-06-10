@@ -374,6 +374,12 @@ independent layers of telemetry, so a single conversation is debuggable end-to-e
 and quality / cost metrics can be aggregated across production
 traffic.
 
+> **MLflow tracing + evaluation:** every turn is also captured as an MLflow
+> trace (a span timeline of supervisor → router → agents → fusion), and the
+> eval harness scores the app with `mlflow.genai.evaluate(...)`. See
+> **[docs/mlflow-observability.md](docs/mlflow-observability.md)** for a
+> plain-language walkthrough.
+
 ### Tables and assets used for observability
 
 | # | Asset | Type | What it captures | Written by |

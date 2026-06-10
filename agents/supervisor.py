@@ -29,6 +29,7 @@ from agents.genie_agent import GenieAgent
 from agents.vector_agent import VectorAgent
 from modules.config import FUSION_LLM_ENDPOINT, ROUTER_LLM_ENDPOINT
 from modules.decision_log import DecisionLog, DecisionRecord, now_iso
+from modules.observability import set_trace_tags, trace
 
 # ---------- Routing prompt & schema ----------
 
@@ -127,6 +128,7 @@ class SupervisorAgent(BaseAgent):
             return "vector"
         return "genie"
 
+    @trace(span_type="LLM", name="router")
     def _call_router(self, question: str) -> RouterDecision:
         """Call the router LLM with strict JSON output + Pydantic validation.
 
@@ -170,6 +172,7 @@ class SupervisorAgent(BaseAgent):
 
     # ---------- Fusion ----------
 
+    @trace(span_type="LLM", name="fusion")
     def _call_fusion(
         self, question: str, parts: Iterable[AgentResponse]
     ) -> str:
@@ -265,6 +268,7 @@ class SupervisorAgent(BaseAgent):
 
     # ---------- Entry point ----------
 
+    @trace(span_type="AGENT", name="supervisor")
     def handle(self, question: str) -> AgentResponse:
         request_id = str(uuid.uuid4())
         t0 = time.monotonic()
@@ -308,6 +312,13 @@ class SupervisorAgent(BaseAgent):
                     data=g.data,
                     chunks=v.chunks,
                 )
+
+        # Tag the trace so the Traces UI can be filtered by route / fallback.
+        set_trace_tags({
+            "llm_route": llm_route,
+            "final_route": route,
+            "fallback_reason": fallback_reason or "none",
+        })
 
         # Emit the decision record (mock=stdout JSON, live=UC INSERT). Never raises.
         self.decision_log.log(

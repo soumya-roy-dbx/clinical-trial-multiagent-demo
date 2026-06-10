@@ -10,8 +10,13 @@ from agents.supervisor import SupervisorAgent
 from modules import db
 from modules.chat_ui import render_sidebar
 from modules.config import PAGE_TITLE, USE_MULTI_AGENT
+from modules.observability import enable_tracing
 
 st.set_page_config(page_title=PAGE_TITLE, layout="wide")
+
+# Turn on MLflow tracing once per app process. Safe no-op if MLflow or
+# Databricks tracking is unavailable (see modules/observability.py).
+enable_tracing()
 
 
 @st.cache_resource

@@ -49,3 +49,12 @@ env:
     value: "true"
   - name: LAKEBASE_FEEDBACK_URL
     value: ""
+
+  # MLflow tracing (observability). When enabled, every chat turn is exported
+  # as a trace to the MLFLOW_EXPERIMENT below, visible in the workspace
+  # Experiments → Traces UI. Set MLFLOW_TRACING_ENABLED=false to turn off.
+  # The app service principal needs CAN_EDIT on the target experiment.
+  - name: MLFLOW_TRACING_ENABLED
+    value: "true"
+  - name: MLFLOW_EXPERIMENT
+    value: "/Users/you@example.com/clinical-assistant-traces"

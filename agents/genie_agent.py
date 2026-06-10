@@ -18,6 +18,7 @@ import sys
 from agents.base import AgentResponse, BaseAgent
 from modules import genie_mock
 from modules.config import GENIE_SPACE_ID, USE_LIVE_GENIE
+from modules.observability import trace
 
 
 class GenieAgent(BaseAgent):
@@ -34,6 +35,7 @@ class GenieAgent(BaseAgent):
             except Exception:
                 self.live = False
 
+    @trace(span_type="AGENT", name="genie_agent")
     def handle(self, question: str) -> AgentResponse:
         if self.live and self._client is not None:
             try:
