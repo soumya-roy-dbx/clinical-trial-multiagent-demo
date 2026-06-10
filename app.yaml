@@ -5,12 +5,13 @@ command:
 
 # Env vars that reference bundle resources use `valueFrom: <resource-key>`
 # so the Apps runtime injects the bound identifier (warehouse ID, Genie
-# space ID, table full name) at startup. Resource keys are defined in
-# databricks.yml under resources.apps.clinical_assistant.resources[].name.
+# space ID, vector-search index full name, table full name) at startup.
+# Resource keys are defined in databricks.yml under
+# resources.apps.clinical_assistant.resources[].name.
 #
-# Env vars with literal `value:` are for resources the bundle's app
-# schema doesn't cover (AI Gateway endpoints, VS endpoint, VS index)
-# and pure feature flags.
+# Env vars with literal `value:` are for things the app resource schema
+# doesn't cover (the VS *endpoint* name — only the index is a resource —
+# plus pure feature flags and the legacy LLM fallback).
 env:
   - name: DATABRICKS_WAREHOUSE_ID
     valueFrom: sql-warehouse
@@ -18,16 +19,32 @@ env:
     valueFrom: genie-space
   - name: DECISION_LOG_TABLE
     valueFrom: supervisor-decisions-table
+
+  # Legacy fallback used by modules/config.py.
   - name: SUPERVISOR_LLM_ENDPOINT
     value: "databricks-meta-llama-3-1-70b-instruct"
+
+  # AI Gateway endpoint names stay as literal `value:` (NOT valueFrom). AI
+  # Gateway endpoints live in a separate namespace from model-serving endpoints,
+  # so the bundle's `serving_endpoint` app resource cannot bind them. The app
+  # SP's CAN_QUERY on these is granted manually via the ai-gateway-endpoints
+  # permissions API.
   - name: ROUTER_LLM_ENDPOINT
     value: "ai_gateway_for_databricks-meta-llama-3-3-70b-instruct"
   - name: FUSION_LLM_ENDPOINT
     value: "ai_gateway_for_databricks-claude-sonnet-4-6"
+
+  # Kept as a plain value: modules/config.py gates live VS on both
+  # VECTOR_SEARCH_ENDPOINT and VECTOR_SEARCH_INDEX, and the endpoint name is
+  # not embedded in the index full name. There is no app-resource sub-type
+  # for a VS *endpoint* (only the index).
   - name: VECTOR_SEARCH_ENDPOINT
     value: "your_vs_endpoint"
+
+  # Full three-level Vector Search index name injected from the app resource.
   - name: VECTOR_SEARCH_INDEX
-    value: "your_catalog.your_schema.protocol_chunks_vs_index"
+    valueFrom: vector-search-index
+
   - name: USE_MULTI_AGENT
     value: "true"
   - name: LAKEBASE_FEEDBACK_URL

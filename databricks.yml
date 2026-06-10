@@ -18,23 +18,31 @@ variables:
     description: Genie Space ID over study_subjects
     default: your_genie_space_id
 
-# Resource bindings the bundle DOES grant atomically on deploy:
+# Resource bindings the bundle grants atomically on deploy:
 #   - SQL warehouse (CAN_USE)
 #   - Genie Space (CAN_RUN)
+#   - Vector Search index, bound as a uc_securable TABLE (SELECT; auto-grants
+#     USE CATALOG + USE SCHEMA + SELECT on the index to the app service principal)
 #   - protocol_docs Volume (READ_VOLUME)
 #   - UC tables (SELECT only; see note below)
 #
-# Grants the Apps bundle schema does NOT support yet (manual post-deploy):
-#   - AI Gateway endpoints CAN_QUERY
-#       AI Gateway endpoints live in a separate resource namespace from
-#       regular serving endpoints (/api/2.0/permissions/ai-gateway-endpoints/).
-#       The bundle's `serving_endpoint` sub-type only sees foundation-model
-#       and KA endpoints, not AI Gateway endpoints.
-#   - Vector Search endpoint CAN_USE
-#       No vector_search_endpoint sub-type in the app resource schema.
+# Grants the Apps bundle schema does NOT support (manual post-deploy):
+#   - AI Gateway endpoints CAN_QUERY (router + fusion LLMs)
+#       AI Gateway endpoints live in a separate namespace from model-serving
+#       endpoints (/api/2.0/permissions/ai-gateway-endpoints/). The bundle's
+#       `serving_endpoint` app resource only resolves model-serving endpoints,
+#       so it cannot bind these. The endpoint names are passed to the app as
+#       plain `value:` env vars in app.yaml; CAN_QUERY is granted manually to
+#       the app service principal.
+#   - Vector Search ENDPOINT CAN_USE
+#       There is no vector_search_endpoint app-resource sub-type; only the
+#       index is a resource. Querying the index still needs CAN_USE on the
+#       endpoint that serves it (your_vs_endpoint), granted manually.
 #   - MODIFY on the supervisor_decisions UC table
 #       uc_securable.permission enum allows only
-#       EXECUTE / READ_VOLUME / SELECT / USE_CONNECTION / WRITE_VOLUME.
+#       EXECUTE / READ_VOLUME / SELECT / USE_CONNECTION / WRITE_VOLUME, so the
+#       SELECT binding below is read-only. Live INSERT logging needs MODIFY,
+#       granted manually.
 #
 # All three manual grants are documented in README.md - Operational gotchas.
 
@@ -54,6 +62,23 @@ resources:
             name: Clinical Trial Subject Disposition
             space_id: ${var.genie_space_id}
             permission: CAN_RUN
+        # A Vector Search index is registered in Unity Catalog as a TABLE
+        # (online-vector-index); the privilege the app needs is SELECT. DABs has
+        # no `vector_search_index` app-resource sub-type — the databricks_app
+        # Terraform provider rejects it (valid sub-types: experiment/genie_space/
+        # job/secret/serving_endpoint/sql_warehouse/uc_securable). The UI's
+        # "Vector search index" resource exists only in the App Resources API
+        # layer, not the bundle. We bind it via `uc_securable`, which grants
+        # USE CATALOG + USE SCHEMA + SELECT to the app SP (identical to the UI
+        # "Can select") and injects the index full name through
+        # `valueFrom: vector-search-index` in app.yaml.
+        # TODO: switch to a native `vector_search_index` app sub-type once the
+        # databricks-sdk-go AppResource struct / CLI bundle schema adds it.
+        - name: vector-search-index
+          uc_securable:
+            securable_full_name: ${var.catalog}.${var.schema}.protocol_chunks_vs_index
+            securable_type: TABLE
+            permission: SELECT
         - name: protocol-chunks-table
           uc_securable:
             securable_full_name: ${var.catalog}.${var.schema}.protocol_chunks
