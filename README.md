@@ -290,8 +290,9 @@ version of the app.
   doesn't yet cover are documented in [gotcha 2](#2-three-grants-the-apps-bundle-schema-does-not-yet-support).)
 - `app.yaml` — runtime config only. Env vars that reference bundle
   resources use `valueFrom: <resource-key>` so the Apps runtime
-  injects warehouse ID, Genie space ID, and table full names at
-  startup without duplicating those identifiers.
+  injects warehouse ID, Genie space ID, vector-search index full
+  name, and table full names at startup without duplicating those
+  identifiers.
 - `modules/decision_log.py` — flips from stdout to UC INSERT when
   the warehouse env var is populated. Decisions live in
   `<catalog>.<schema>.supervisor_decisions`, queryable like any UC
@@ -498,8 +499,9 @@ databricks bundle deploy --target dev
 
 To reference resource bindings from env vars without duplicating IDs,
 use `valueFrom: <resource-key>` in `app.yaml` — the Apps runtime
-injects the bound identifier (warehouse ID, Genie space ID, table
-full name) at startup. Resource keys are defined under
+injects the bound identifier (warehouse ID, Genie space ID,
+vector-search index full name, table full name) at startup. Resource
+keys are defined under
 `resources.apps.<app_name>.resources[].name` in `databricks.yml`.
 
 ### 2. Three grants the Apps bundle schema does NOT yet support
